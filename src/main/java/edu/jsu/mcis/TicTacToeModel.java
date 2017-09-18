@@ -5,7 +5,6 @@ public class TicTacToeModel{
     private static final int DEFAULT_WIDTH = 3;
     
     public enum Mark {
-        
         X("X"), 
         O("O"), 
         EMPTY(" ");
@@ -23,7 +22,6 @@ public class TicTacToeModel{
     };
     
     public enum Result {
-        
         X("X"), 
         O("O"), 
         TIE("Tie"), 
@@ -50,12 +48,7 @@ public class TicTacToeModel{
     }
     
     public TicTacToeModel(int width) {
-		if(width >= 3)
-			this.width = width;
-		else{
-			System.out.println("X cannot lose on anything smaller than a standard grid.\nDefaulting to width of 3.");
-			this.width = DEFAULT_WIDTH;
-		}
+		this.width = width;
         xTurn = true;
         grid = new Mark[width][width];
 		for(int i=0; i<width; i++)
@@ -64,11 +57,15 @@ public class TicTacToeModel{
     }
 	
     public boolean makeMark(int row, int col) {
-        if(isValidSquare(row, col) && isSquareMarked(row, col)){
-			if(xTurn)
+        if(isValidSquare(row, col) && !isSquareMarked(row, col)){
+			if(xTurn){
 				grid[row][col] = Mark.X;
-			else
+				xTurn = false;
+			}
+			else{
 				grid[row][col] = Mark.O;
+				xTurn = true;
+			}
 			return true;
 		}
 		else{
@@ -78,7 +75,8 @@ public class TicTacToeModel{
     }
 	
     private boolean isValidSquare(int row, int col) {
-        return (row < width && col < width);
+        return (row < width && col < width
+			&& row >= 0 && col >= 0);
     }
 	
     private boolean isSquareMarked(int row, int col) {
@@ -90,20 +88,11 @@ public class TicTacToeModel{
     }
 	
     public Result getResult() {
-        
-        /* Use isMarkWin() to see if X or O is the winner, if the game is a
-           tie, or if the game is not over, and return the corresponding Result
-           value */
-        
-        for(int i=0; i<width; i++){
-			for(int j=0; j<width; j++){
-				if(isMarkWin(grid[i][j])){
-					if(grid[i][j] == Mark.X)
-						return Result.X;
-					else
-						return Result.O;
-				}
-			}
+		if(isMarkWin(Mark.X)){
+			return Result.X;
+		}
+		if(isMarkWin(Mark.O)){
+			return Result.O;
 		}
 		if(isTie())
 			return Result.TIE;
@@ -133,7 +122,6 @@ public class TicTacToeModel{
 			}
 		}
         return true;
-        
     }
 
     public boolean isGameover(){
