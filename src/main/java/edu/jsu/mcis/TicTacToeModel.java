@@ -11,12 +11,12 @@ public class TicTacToeModel{
 
         private String message;
         
-        private Mark(String msg) {
+        private Mark(String msg){
             message = msg;
         }
         
         @Override
-        public String toString() {
+        public String toString(){
             return message;
         }
     };
@@ -29,12 +29,12 @@ public class TicTacToeModel{
 
         private String message;
         
-        private Result(String msg) {
+        private Result(String msg){
             message = msg;
         }
         
         @Override
-        public String toString() {
+        public String toString(){
             return message;
         }
     };
@@ -43,11 +43,11 @@ public class TicTacToeModel{
     private boolean xTurn;
     private int width;
     
-    public TicTacToeModel() {
+    public TicTacToeModel(){
         this(DEFAULT_WIDTH);      
     }
     
-    public TicTacToeModel(int width) {
+    public TicTacToeModel(int width){
 		this.width = width;
         xTurn = true;
         grid = new Mark[width][width];
@@ -56,7 +56,7 @@ public class TicTacToeModel{
 				grid[i][j] = Mark.EMPTY;
     }
 	
-    public boolean makeMark(int row, int col) {
+    public boolean makeMark(int row, int col){
         if(isValidSquare(row, col) && !isSquareMarked(row, col)){
 			if(xTurn){
 				grid[row][col] = Mark.X;
@@ -74,20 +74,20 @@ public class TicTacToeModel{
 		}
     }
 	
-    private boolean isValidSquare(int row, int col) {
+    private boolean isValidSquare(int row, int col){
         return (row < width && col < width
 			&& row >= 0 && col >= 0);
     }
 	
-    private boolean isSquareMarked(int row, int col) {
+    private boolean isSquareMarked(int row, int col){
         return (grid[row][col] != Mark.EMPTY);
     }
 	
-    public Mark getMark(int row, int col) {
+    public Mark getMark(int row, int col){
         return grid[row][col];
     }
 	
-    public Result getResult() {
+    public Result getResult(){
 		if(isMarkWin(Mark.X)){
 			return Result.X;
 		}
@@ -100,21 +100,60 @@ public class TicTacToeModel{
 		return Result.NONE;
     }
 	
-    private boolean isMarkWin(Mark mark) {
-        
-        /* Check the squares of the board to see if the specified mark is the
-           winner */
-        
-        /* INSERT YOUR CODE HERE */
+    private boolean isMarkWin(Mark mark){
+        int numMatches;
+		for(int i=0; i<width; i++){
+			numMatches = checkRow(i, mark);
+			if(numMatches == width)
+				return true;
+			numMatches = 0;
+			
+			numMatches = checkColumn(i, mark);
+			if(numMatches == width)
+				return true;
+			numMatches = 0;
+		}
+		numMatches = checkDiagonal(mark);
+		if(numMatches == width)
+			return true;
 
-        return false; /* remove this line! */
-
+        return false;
     }
 	
-    private boolean isTie() {
-        
-        /* Check the squares of the board to see if the game is a tie */
-
+	private int checkRow(int index, Mark m){
+		int count = 0;
+		for(int i=0; i<width; i++){
+			if(grid[index][i] == m)
+				count++;
+		}
+		return count;
+	}
+	
+	private int checkColumn(int index, Mark m){
+		int count = 0;
+		for(int i=0; i<width; i++){
+			if(grid[i][index] == m)
+				count++;
+		}
+		return count;
+	}
+	
+	private int checkDiagonal(Mark m){
+		int countDown = 0;
+		int countUp = 0;
+		for(int i=0; i<width; i++){
+			if(grid[i][i] == m)
+				countDown++;
+			if(grid[(width-1)-i][i] == m)
+				countUp++;
+		}
+		if(countUp > countDown)
+			return countUp;
+		else
+			return countDown;
+	}
+	
+    private boolean isTie(){
         for(int i=0; i<width; i++){
 			for(int j=0; j<width; j++){
 				if(grid[i][j] == Mark.EMPTY)
