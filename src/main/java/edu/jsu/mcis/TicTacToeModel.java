@@ -68,8 +68,7 @@ public class TicTacToeModel{
 			}
 			return true;
 		}
-		else{
-			System.out.println("Selection Invalid!");   
+		else{ 
 			return false;
 		}
     }

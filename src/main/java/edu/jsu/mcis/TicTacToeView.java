@@ -9,9 +9,6 @@ public class TicTacToeView {
     }
 	
     public void viewModel(){
-        
-        /* Print the board to the console (see examples) */
-        
         String output = "\n  012\n";
 		
 		String line = "";
@@ -29,28 +26,18 @@ public class TicTacToeView {
 		System.out.print(output + "\n\n\n\n");
     }
 
-    public void showNextMovePrompt() {
-
-        /* Display a prompt for the player's next move (see examples) */
-
-        /* INSERT YOUR CODE HERE */
-
+    public void showNextMovePrompt(){
+        if(model.isXTurn())
+			System.out.print("Player 1 (X) Move:\nEnter the row and column numbers, separated bya  space:");
+		else
+			System.out.print("Player 2 (O) Move:\nEnter the row and column numbers, separated bya  space:");
     }
 
-    public void showInputError() {
-
-        /* Display an error if input is invalid (see examples) */
-
-        /* INSERT YOUR CODE HERE */
-
+    public void showInputError(){
+		System.out.println("Selection Invalid!");
     }
 
-    public void showResult(String r) {
-
-        /* Display final winner */
-
+    public void showResult(String r){
         System.out.println(r + "!");
-
     }
-	
 }
